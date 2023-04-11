@@ -7,13 +7,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.List;
 
 
 @RestController
 @RequestMapping("/api")
+@RolesAllowed({"ADMIN"})
 public class AdminController {
 
     private final UserServ userServ;
@@ -46,11 +47,6 @@ public class AdminController {
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<User> getUserByUsername (Principal principal) {
-        User user = userServ.findByUsername(principal.getName());
-        return new ResponseEntity<>(user,HttpStatus.OK);
-    }
 
     @PutMapping("/users/{id}")
     public ResponseEntity<?> pageEdit(@PathVariable("id") Long id,
